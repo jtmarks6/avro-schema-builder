@@ -21,7 +21,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@commitlint/cli": "^8.2.0",
+    "@commitlint/cli": "^17.4.2",
     "@threads/tsconfig": "^3.0.2",
     "@tsconfig/recommended": "^1.0.1",
     "@types/jest": "^29.1.2",

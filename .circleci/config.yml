@@ -71,10 +71,12 @@ commands:
       - run:
           name: Prettier (check "yarn prettier:write" has been run)
           command: yarn prettier:check
+      - run:
+          name: Test
+          command: yarn test --verbose
 
   test:
     steps:
       - run:
           name: Test
           command: yarn ci:test
-

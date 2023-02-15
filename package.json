@@ -1,8 +1,9 @@
 {
-  "name": "npm-package",
-  "description": "npm-package-template",
+  "name": "avro-schema-builder",
+  "description": "avro-schema-builder",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "version": "0.0.1-beta",
   "files": [
     "lib/"
   ],
@@ -64,7 +65,7 @@
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
       "prettier --write",
-      "eslint .",
+      "eslint ./src",
       "git add"
     ],
     "*.{md,json,yaml,js,jsx}": [

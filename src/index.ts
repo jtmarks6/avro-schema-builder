@@ -2,7 +2,7 @@ import * as types from './types';
 
 export * from './types';
 
-type FieldBuilder =
+export type FieldBuilder =
   | PrimitiveField<types.PrimitiveType>
   | RecordField
   | ArrayField

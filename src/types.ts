@@ -38,6 +38,7 @@ export interface RecordType {
   doc?: string;
   aliases?: string[];
   fields: RecordFieldSerialized[];
+  default?: any;
 }
 
 export interface EnumType {

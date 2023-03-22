@@ -37,6 +37,7 @@ export type AddPrimitiveFieldInput<T extends types.PrimitiveType> = types.BaseFi
 };
 
 export type RecordFieldInput = types.NamedFieldParams & {
+  defaultValue?: any;
   namespace?: string;
   nullable?: boolean;
 };
@@ -354,6 +355,7 @@ class FieldsBuilder {
 export class RecordField extends BaseField {
   public namespace: string | undefined = undefined;
   public baseField?: boolean;
+  public defaultValue?: any;
   public readonly nullable?: boolean;
 
   private _fields = new FieldsBuilder();
@@ -362,6 +364,7 @@ export class RecordField extends BaseField {
     super({params});
     this.namespace = params.namespace;
     this.nullable = params.nullable;
+    this.defaultValue = params.defaultValue;
   }
 
   addField(field: FieldBuilder) {
@@ -406,6 +409,10 @@ export class RecordField extends BaseField {
 
     if (this.namespace) {
       baseType.namespace = this.namespace;
+    }
+
+    if (this.defaultValue !== undefined) {
+      baseType.default = this.defaultValue;
     }
 
     return baseType;

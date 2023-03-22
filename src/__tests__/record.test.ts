@@ -269,6 +269,7 @@ test('should create nullable records', () => {
               doc: 'children field',
               order: FieldOrder.descending,
               nullable: true,
+              defaultValue: null,
             }).addField(
               new PrimitiveField({
                 name: 'id',
@@ -296,6 +297,7 @@ test('should create nullable records', () => {
                   "type": [
                     "null",
                     {
+                      "default": null,
                       "fields": [
                         {
                           "name": "id",

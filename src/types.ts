@@ -83,3 +83,10 @@ export interface BaseFieldParams {
   doc?: string;
   order?: FieldOrder;
 }
+
+export type NamedFieldParams = BaseFieldParams & {
+  /*
+    Default to name.
+  */
+  keyNameOverride?: string;
+};

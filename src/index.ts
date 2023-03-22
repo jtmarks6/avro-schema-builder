@@ -36,7 +36,7 @@ export type AddPrimitiveFieldInput<T extends types.PrimitiveType> = types.BaseFi
   nullable?: false;
 };
 
-export type RecordFieldInput = types.BaseFieldParams & {
+export type RecordFieldInput = types.NamedFieldParams & {
   namespace?: string;
   nullable?: boolean;
 };
@@ -61,7 +61,7 @@ export type MapFieldInput = Omit<types.BaseFieldParams, 'order'> & {
   nullable?: boolean;
 };
 
-export type EnumFieldInput = Omit<types.BaseFieldParams, 'order'> & {
+export type EnumFieldInput = Omit<types.NamedFieldParams, 'order'> & {
   type: string[];
   nullable?: boolean;
   namespace?: string;
@@ -69,7 +69,7 @@ export type EnumFieldInput = Omit<types.BaseFieldParams, 'order'> & {
   defaultValue?: string;
 };
 
-export type FixedFieldInput = Omit<types.BaseFieldParams, 'order' | 'doc'> & {
+export type FixedFieldInput = Omit<types.NamedFieldParams, 'order' | 'doc'> & {
   size: number;
   nullable?: boolean;
   aliases?: string[];
@@ -80,12 +80,14 @@ class BaseField {
   public readonly doc?: string;
   public readonly order?: types.FieldOrder;
   public readonly nullable?: boolean;
+  public readonly keyName: string;
 
-  constructor({params}: {params: types.BaseFieldParams & {nullable?: boolean}}) {
+  constructor({params}: {params: types.NamedFieldParams & {nullable?: boolean}}) {
     this.name = params.name;
     this.doc = params.doc;
     this.order = params.order;
     this.nullable = params.nullable;
+    this.keyName = params.keyNameOverride || params.name;
   }
 }
 
@@ -105,7 +107,7 @@ export class ReferenceField extends BaseField {
 
   public compile(): types.RecordFieldSerialized {
     const field: types.RecordFieldSerialized = {
-      name: this.name,
+      name: this.keyName,
       type: this.nullable && this.type !== 'null' ? ['null', this.getType()] : this.getType(),
     };
 
@@ -137,7 +139,7 @@ export class PrimitiveField<T extends types.PrimitiveType> extends BaseField {
 
   public compile(): types.RecordFieldSerialized {
     const field: types.RecordFieldSerialized = {
-      name: this.name,
+      name: this.keyName,
       type: this.nullable && this.type !== 'null' ? ['null', this.getType()] : this.getType(),
     };
 
@@ -200,7 +202,7 @@ export class EnumField extends BaseField {
 
   public compile(): types.RecordFieldSerialized {
     return {
-      name: this.name,
+      name: this.keyName,
       type: this.nullable ? ['null', this.getType()] : this.getType(),
     };
   }
@@ -233,7 +235,7 @@ export class FixedField extends BaseField {
 
   public compile(): types.RecordFieldSerialized {
     return {
-      name: this.name,
+      name: this.keyName,
       type: this.nullable ? ['null', this.getType()] : this.getType(),
     };
   }
@@ -261,7 +263,7 @@ export class MapField extends BaseField {
 
   public compile(): types.RecordFieldSerialized {
     return {
-      name: this.name,
+      name: this.keyName,
       type: this.nullable ? ['null', this.getType()] : this.getType(),
     };
   }
@@ -297,7 +299,7 @@ export class UnionField extends BaseField {
 
   public compile(): types.RecordFieldSerialized {
     return {
-      name: this.name,
+      name: this.keyName,
       type: this.getType(),
     };
   }
@@ -325,7 +327,7 @@ export class ArrayField extends BaseField {
 
   public compile(): types.RecordFieldSerialized {
     return {
-      name: this.name,
+      name: this.keyName,
       type: this.nullable ? ['null', this.getType()] : this.getType(),
     };
   }
@@ -390,7 +392,7 @@ export class RecordField extends BaseField {
     }
 
     return {
-      name: this.name,
+      name: this.keyName,
       type: this.nullable ? ['null', this.getType()] : this.getType(),
     };
   }

@@ -18,6 +18,14 @@ test('should create fixed types', () => {
           nullable: true,
         }),
       )
+      .addField(
+        new FixedField({
+          keyNameOverride: 'fixed_field_key_override',
+          name: 'fixed_field_key_override_example',
+          size: 12451302,
+          nullable: true,
+        }),
+      )
       .compile(),
   ).toMatchInlineSnapshot(`
     {
@@ -40,6 +48,17 @@ test('should create fixed types', () => {
             {
               "name": "fixed_field_nullable",
               "size": 52424302,
+              "type": "fixed",
+            },
+          ],
+        },
+        {
+          "name": "fixed_field_key_override",
+          "type": [
+            "null",
+            {
+              "name": "fixed_field_key_override_example",
+              "size": 12451302,
               "type": "fixed",
             },
           ],

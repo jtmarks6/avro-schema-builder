@@ -19,7 +19,8 @@ type SubField =
   | EnumField
   | MapField
   | FixedField
-  | UnionField;
+  | UnionField
+  | ReferenceField;
 
 export type AddNullablePrimitiveFieldInput<
   T extends types.PrimitiveType

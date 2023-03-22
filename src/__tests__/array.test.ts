@@ -7,6 +7,7 @@ import {
   MapField,
   PrimitiveField,
   RecordField,
+  ReferenceField,
 } from '..';
 
 test('should create primitive type arrays', () => {
@@ -408,6 +409,40 @@ test('should create fixed type arrays', () => {
               "size": 12352,
               "type": "fixed",
             },
+            "type": "array",
+          },
+        },
+      ],
+      "name": "fixed",
+      "namespace": "fixed.array",
+      "type": "record",
+    }
+  `);
+});
+
+test('should create reference type arrays', () => {
+  expect(
+    new AvroSchemaBuilder('fixed')
+      .record('fixed.array')
+      .addField(
+        new ArrayField({
+          name: 'fixed_array',
+          doc: 'fixed array',
+          order: FieldOrder.descending,
+          type: new ReferenceField({
+            name: 'ref_field',
+            type: 'x.y.z',
+          }),
+        }),
+      )
+      .compile(),
+  ).toMatchInlineSnapshot(`
+    {
+      "fields": [
+        {
+          "name": "fixed_array",
+          "type": {
+            "items": "x.y.z",
             "type": "array",
           },
         },

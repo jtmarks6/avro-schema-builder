@@ -132,6 +132,60 @@ test('should create primitive type arrays', () => {
   `);
 });
 
+test('should create type arrays with default', () => {
+  expect(
+    new AvroSchemaBuilder('default')
+      .record('record.array')
+      .addField(
+        new ArrayField({
+          defaultValue: [],
+          name: 'empty_default',
+          doc: 'empty default array',
+          type: 'boolean',
+          order: FieldOrder.descending,
+        }),
+      )
+      .addField(
+        new ArrayField({
+          defaultValue: null,
+          nullable: true,
+          name: 'null_default',
+          doc: 'null default array',
+          type: 'boolean',
+          order: FieldOrder.descending,
+        }),
+      )
+      .compile(),
+  ).toMatchInlineSnapshot(`
+    {
+      "fields": [
+        {
+          "default": [],
+          "name": "empty_default",
+          "type": {
+            "items": "boolean",
+            "type": "array",
+          },
+        },
+        {
+          "default": null,
+          "name": "null_default",
+          "type": [
+            "null",
+            {
+              "items": "boolean",
+              "type": "array",
+            },
+          ],
+        },
+      ],
+      "name": "default",
+      "namespace": "record.array",
+      "type": "record",
+    }
+  `);
+});
+
 test('should create nullable type arrays', () => {
   expect(
     new AvroSchemaBuilder('primitive')

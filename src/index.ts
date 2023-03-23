@@ -49,6 +49,7 @@ export type ReferenceFieldInput = Omit<types.BaseFieldParams, 'order'> & {
 };
 
 export type ArrayFieldInput = types.BaseFieldParams & {
+  defaultValue?: any[] | null;
   type: SubField;
   nullable?: boolean;
 };
@@ -315,11 +316,13 @@ export class ArrayField extends BaseField {
   private readonly _type: SubField;
 
   public readonly nullable?: boolean;
+  public readonly defaultValue?: any[] | null;
 
-  constructor({type, nullable, ...params}: ArrayFieldInput) {
+  constructor({type, nullable, defaultValue, ...params}: ArrayFieldInput) {
     super({params});
     this._type = type;
     this.nullable = nullable;
+    this.defaultValue = defaultValue;
   }
 
   public getType(): types.ArrayType {
@@ -332,10 +335,16 @@ export class ArrayField extends BaseField {
   }
 
   public compile(): types.RecordFieldSerialized {
-    return {
+    const baseType: types.RecordFieldSerialized = {
       name: this.keyName,
       type: this.nullable ? ['null', this.getType()] : this.getType(),
     };
+
+    if (this.defaultValue !== undefined) {
+      baseType.default = this.defaultValue;
+    }
+
+    return baseType;
   }
 }
 

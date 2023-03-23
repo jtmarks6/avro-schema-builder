@@ -20,7 +20,8 @@ type SubField =
   | MapField
   | FixedField
   | UnionField
-  | ReferenceField;
+  | ReferenceField
+  | NamedTypeField<types.PrimitiveType>;
 
 export type AddNullablePrimitiveFieldInput<
   T extends types.PrimitiveType
@@ -75,6 +76,10 @@ export type FixedFieldInput = Omit<types.NamedFieldParams, 'order' | 'doc'> & {
   nullable?: boolean;
   aliases?: string[];
 };
+
+export interface NamedFieldInput<T extends types.PrimitiveType> {
+  type: T;
+}
 
 class BaseField {
   public readonly name: string;
@@ -331,6 +336,22 @@ export class ArrayField extends BaseField {
       name: this.keyName,
       type: this.nullable ? ['null', this.getType()] : this.getType(),
     };
+  }
+}
+
+export class NamedTypeField<T extends types.PrimitiveType> {
+  private readonly _type: T;
+
+  constructor({type}: NamedFieldInput<T>) {
+    this._type = type;
+  }
+
+  public getType(): types.NamedType {
+    const namedType: types.NamedType = {
+      type: this._type,
+    };
+
+    return namedType;
   }
 }
 

@@ -5,6 +5,7 @@ import {
   FieldOrder,
   FixedField,
   MapField,
+  NamedTypeField,
   PrimitiveField,
   RecordField,
   ReferenceField,
@@ -449,6 +450,41 @@ test('should create reference type arrays', () => {
       ],
       "name": "fixed",
       "namespace": "fixed.array",
+      "type": "record",
+    }
+  `);
+});
+
+test('should create named type arrays', () => {
+  expect(
+    new AvroSchemaBuilder('named_types')
+      .record('named.types')
+      .addField(
+        new ArrayField({
+          name: 'named_array',
+          doc: 'named array',
+          order: FieldOrder.ascending,
+          type: new NamedTypeField({
+            type: 'int',
+          }),
+        }),
+      )
+      .compile(),
+  ).toMatchInlineSnapshot(`
+    {
+      "fields": [
+        {
+          "name": "named_array",
+          "type": {
+            "items": {
+              "type": "int",
+            },
+            "type": "array",
+          },
+        },
+      ],
+      "name": "named_types",
+      "namespace": "named.types",
       "type": "record",
     }
   `);

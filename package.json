@@ -7,7 +7,7 @@
   "files": [
     "lib/"
   ],
-  "repository": "git@github.com:diogofcunha/package-template.git",
+  "repository": "git@github.com:diogofcunha/avro-schema-builder.git",
   "author": "Diogo Cunha",
   "license": "MIT",
   "scripts": {

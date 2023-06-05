@@ -120,7 +120,7 @@ This package provides several classes and types for building Avro schemas:
 - Other classes (`PrimitiveField`, `RecordField`, `ArrayField`, etc.): Represent the different types of fields available in Avro.
 - `types`: Contains TypeScript type definitions for the various Avro types.
 
-For a more detailed explanation of the classes and types available, and how to use them, please check out the source code. Each class and type is documented with JSDoc comments.
+For a more detailed explanation of the classes and types available, and how to use them, please check out the source code and the test cases.
 
 ## Contributing
 

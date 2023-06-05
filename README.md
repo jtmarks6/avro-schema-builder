@@ -1,5 +1,11 @@
 # avro-schema-builder
 
+[![CircleCI](https://circleci.com/gh/diogofcunha/avro-schema-builder.svg?style=svg)](https://circleci.com/gh/diogofcunha/avro-schema-builder)
+[![npm package][npm-badge]][npm]
+
+[npm-badge]: https://img.shields.io/npm/v/avro-schema-builder.png?style=flat-square
+[npm]: https://www.npmjs.com/package/avro-schema-builder
+
 A robust and feature-rich package for building Avro Schema definitions.
 
 ## Description

@@ -72,5 +72,22 @@
       "prettier --write",
       "git add"
     ]
-  }
+  },
+  "keywords": [
+    "avro",
+    "schema",
+    "schema-builder",
+    "javascript",
+    "typescript",
+    "data-processing",
+    "serialization",
+    "big-data",
+    "data-serialization",
+    "avro-schema",
+    "nodejs",
+    "data-modeling",
+    "data-interchange",
+    "type-safe",
+    "data-structures"
+  ]
 }

@@ -324,3 +324,95 @@ test('should create nullable records', () => {
     }
   `);
 });
+
+test('should create customProp records', () => {
+  expect(
+    new AvroSchemaBuilder('myRecord')
+      .record('record.record')
+      .addField(
+        new RecordField({
+          namespace: 'record.primitive.x',
+          name: 'children',
+          doc: 'children field',
+          order: FieldOrder.ascending,
+          nullable: true,
+        })
+          .prop('customProp', 'val')
+          .addField(
+            new PrimitiveField({
+              name: 'id',
+              type: 'int',
+            }).prop('customProp', 'val'),
+          )
+          .addField(
+            new RecordField({
+              namespace: 'record.primitive.x.y',
+              name: 'grandchildren',
+              doc: 'children field',
+              order: FieldOrder.descending,
+              nullable: true,
+              defaultValue: null,
+            })
+              .prop('customProp', 'val')
+              .addField(
+                new PrimitiveField({
+                  name: 'id',
+                  type: 'int',
+                }).prop('customProp', 'val'),
+              ),
+          ),
+      )
+      .prop('customPropTopLevel', 'val')
+      .compile(),
+  ).toMatchInlineSnapshot(`
+    {
+      "customPropTopLevel": "val",
+      "fields": [
+        {
+          "customProp": "val",
+          "name": "children",
+          "type": [
+            "null",
+            {
+              "customProp": "val",
+              "fields": [
+                {
+                  "customProp": "val",
+                  "name": "id",
+                  "type": "int",
+                },
+                {
+                  "customProp": "val",
+                  "name": "grandchildren",
+                  "type": [
+                    "null",
+                    {
+                      "customProp": "val",
+                      "default": null,
+                      "fields": [
+                        {
+                          "customProp": "val",
+                          "name": "id",
+                          "type": "int",
+                        },
+                      ],
+                      "name": "grandchildren",
+                      "namespace": "record.primitive.x.y",
+                      "type": "record",
+                    },
+                  ],
+                },
+              ],
+              "name": "children",
+              "namespace": "record.primitive.x",
+              "type": "record",
+            },
+          ],
+        },
+      ],
+      "name": "myRecord",
+      "namespace": "record.record",
+      "type": "record",
+    }
+  `);
+});

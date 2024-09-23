@@ -26,6 +26,13 @@ test('should create fixed types', () => {
           nullable: true,
         }),
       )
+      .addField(
+        new FixedField({
+          name: 'fixed_field_customProp',
+          size: 52424302,
+          nullable: true,
+        }).prop('customProp', 'val'),
+      )
       .compile(),
   ).toMatchInlineSnapshot(`
     {
@@ -59,6 +66,19 @@ test('should create fixed types', () => {
             {
               "name": "fixed_field_key_override_example",
               "size": 12451302,
+              "type": "fixed",
+            },
+          ],
+        },
+        {
+          "customProp": "val",
+          "name": "fixed_field_customProp",
+          "type": [
+            "null",
+            {
+              "customProp": "val",
+              "name": "fixed_field_customProp",
+              "size": 52424302,
               "type": "fixed",
             },
           ],

@@ -492,3 +492,109 @@ test('should create a schema - with default values', () => {
     }
   `);
 });
+
+test('should create a schema - with custom properties', () => {
+  expect(
+    new AvroSchemaBuilder('primitive')
+      .record('record.primitive')
+      .addField(
+        new PrimitiveField({
+          name: 'boolean_field',
+          type: 'boolean',
+        }).prop('customProp', 'val'),
+      )
+      .addField(
+        new PrimitiveField({
+          name: 'bytes_field',
+          type: 'bytes',
+        }).prop('customProp', 'val'),
+      )
+      .addField(
+        new PrimitiveField({
+          name: 'double_field',
+          type: 'double',
+        }).prop('customProp', 'val'),
+      )
+      .addField(
+        new PrimitiveField({
+          name: 'float_field',
+          type: 'float',
+        }).prop('customProp', 'val'),
+      )
+      .addField(
+        new PrimitiveField({
+          name: 'int_field',
+          type: 'int',
+        }).prop('customProp', 'val'),
+      )
+      .addField(
+        new PrimitiveField({
+          name: 'long_field',
+          type: 'long',
+        }).prop('customProp', 'val'),
+      )
+      .addField(
+        new PrimitiveField({
+          name: 'null_field',
+          type: 'null',
+        }).prop('customProp', 'val'),
+      )
+      .addField(
+        new PrimitiveField({
+          name: 'string_field',
+          type: 'string',
+        }).prop('customProp', 'val'),
+      )
+      .prop('customPropTopLevel', 'val')
+      .compile(),
+  ).toMatchInlineSnapshot(`
+    {
+      "customPropTopLevel": "val",
+      "fields": [
+        {
+          "customProp": "val",
+          "name": "boolean_field",
+          "type": "boolean",
+        },
+        {
+          "customProp": "val",
+          "name": "bytes_field",
+          "type": "bytes",
+        },
+        {
+          "customProp": "val",
+          "name": "double_field",
+          "type": "double",
+        },
+        {
+          "customProp": "val",
+          "name": "float_field",
+          "type": "float",
+        },
+        {
+          "customProp": "val",
+          "name": "int_field",
+          "type": "int",
+        },
+        {
+          "customProp": "val",
+          "name": "long_field",
+          "type": "long",
+        },
+        {
+          "customProp": "val",
+          "name": "null_field",
+          "type": "null",
+        },
+        {
+          "customProp": "val",
+          "name": "string_field",
+          "type": "string",
+        },
+      ],
+      "name": "primitive",
+      "namespace": "record.primitive",
+      "type": "record",
+    }
+  `);
+});

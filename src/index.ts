@@ -88,6 +88,7 @@ class BaseField {
   public readonly order?: types.FieldOrder;
   public readonly nullable?: boolean;
   public readonly keyName: string;
+  public readonly customProperties: Record<string, any>;
 
   constructor({params}: {params: types.NamedFieldParams & {nullable?: boolean}}) {
     this.name = params.name;
@@ -95,12 +96,19 @@ class BaseField {
     this.order = params.order;
     this.nullable = params.nullable;
     this.keyName = params.keyNameOverride || params.name;
+    this.customProperties = {};
+  }
+
+  public prop(key: string, value: any): this {
+    this.customProperties[key] = value;
+    return this;
   }
 }
 
 export class ReferenceField extends BaseField {
   public readonly type: string;
   public readonly nullable?: boolean;
+  public readonly customProperties: Record<string, any> = {};
 
   constructor(params: ReferenceFieldInput) {
     super({params: {...params, nullable: params.nullable}});
@@ -116,6 +124,7 @@ export class ReferenceField extends BaseField {
     const field: types.RecordFieldSerialized = {
       name: this.keyName,
       type: this.nullable && this.type !== 'null' ? ['null', this.getType()] : this.getType(),
+      ...this.customProperties,
     };
 
     if (this.order) {
@@ -148,6 +157,7 @@ export class PrimitiveField<T extends types.PrimitiveType> extends BaseField {
     const field: types.RecordFieldSerialized = {
       name: this.keyName,
       type: this.nullable && this.type !== 'null' ? ['null', this.getType()] : this.getType(),
+      ...this.customProperties,
     };
 
     if (this.order) {
@@ -186,6 +196,7 @@ export class EnumField extends BaseField {
       symbols: this.symbols,
       type: 'enum',
       name: this.name,
+      ...this.customProperties,
     };
 
     if (this.aliases) {
@@ -211,6 +222,7 @@ export class EnumField extends BaseField {
     return {
       name: this.keyName,
       type: this.nullable ? ['null', this.getType()] : this.getType(),
+      ...this.customProperties,
     };
   }
 }
@@ -231,6 +243,7 @@ export class FixedField extends BaseField {
       type: 'fixed',
       name: this.name,
       size: this.size,
+      ...this.customProperties,
     };
 
     if (this.aliases) {
@@ -244,6 +257,7 @@ export class FixedField extends BaseField {
     return {
       name: this.keyName,
       type: this.nullable ? ['null', this.getType()] : this.getType(),
+      ...this.customProperties,
     };
   }
 }
@@ -263,6 +277,7 @@ export class MapField extends BaseField {
     const arrayType: types.MapType = {
       type: 'map',
       values: typeof this._type === 'string' ? this._type : this._type.getType(),
+      ...this.customProperties,
     };
 
     return arrayType;
@@ -272,6 +287,7 @@ export class MapField extends BaseField {
     return {
       name: this.keyName,
       type: this.nullable ? ['null', this.getType()] : this.getType(),
+      ...this.customProperties,
     };
   }
 }
@@ -283,7 +299,6 @@ export class UnionField extends BaseField {
 
   constructor({types, nullable, ...params}: UnionFieldInput) {
     super({params});
-
     this._types = types;
     this.nullable = nullable;
   }
@@ -308,6 +323,7 @@ export class UnionField extends BaseField {
     return {
       name: this.keyName,
       type: this.getType(),
+      ...this.customProperties,
     };
   }
 }
@@ -329,6 +345,7 @@ export class ArrayField extends BaseField {
     const arrayType: types.ArrayType = {
       type: 'array',
       items: typeof this._type === 'string' ? this._type : this._type.getType(),
+      ...this.customProperties,
     };
 
     return arrayType;
@@ -338,6 +355,7 @@ export class ArrayField extends BaseField {
     const baseType: types.RecordFieldSerialized = {
       name: this.keyName,
       type: this.nullable ? ['null', this.getType()] : this.getType(),
+      ...this.customProperties,
     };
 
     if (this.defaultValue !== undefined) {
@@ -427,6 +445,7 @@ export class RecordField extends BaseField {
     return {
       name: this.keyName,
       type: this.nullable ? ['null', this.getType()] : this.getType(),
+      ...this.customProperties,
     };
   }
 
@@ -435,6 +454,7 @@ export class RecordField extends BaseField {
       type: 'record',
       name: this.name,
       fields: this._fields.compile(),
+      ...this.customProperties,
     };
 
     if (this.namespace) {

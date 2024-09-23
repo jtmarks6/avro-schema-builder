@@ -34,6 +34,13 @@ test('should create a schema', () => {
           nullable: true,
         }),
       )
+      .addField(
+        new EnumField({
+          name: 'enum_field_with_customProp',
+          type: Object.values(Color),
+          defaultValue: Color.green,
+        }).prop('customProp', 'val'),
+      )
       .compile(),
   ).toMatchInlineSnapshot(`
     {
@@ -83,6 +90,21 @@ test('should create a schema', () => {
               "type": "enum",
             },
           ],
+        },
+        {
+          "customProp": "val",
+          "name": "enum_field_with_customProp",
+          "type": {
+            "customProp": "val",
+            "default": "green",
+            "name": "enum_field_with_customProp",
+            "symbols": [
+              "red",
+              "green",
+              "blue",
+            ],
+            "type": "enum",
+          },
         },
       ],
       "name": "enum",

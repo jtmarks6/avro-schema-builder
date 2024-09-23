@@ -324,6 +324,160 @@ test('should create nullable type arrays', () => {
   `);
 });
 
+test('should create custom property arrays', () => {
+  expect(
+    new AvroSchemaBuilder('primitive')
+      .record('record.array')
+      .addField(
+        new ArrayField({
+          name: 'boolean_array',
+          doc: 'boolean array',
+          type: 'boolean',
+          order: FieldOrder.descending,
+          nullable: true,
+        }).prop('customProp', 'val'),
+      )
+      .addField(
+        new ArrayField({
+          name: 'bytes_array',
+          doc: 'bytes array',
+          type: 'bytes',
+          order: FieldOrder.ignore,
+        }).prop('customProp', 'val'),
+      )
+      .addField(
+        new ArrayField({
+          name: 'double_array',
+          doc: 'double array',
+          type: 'double',
+          order: FieldOrder.ignore,
+        }).prop('customProp', 'val'),
+      )
+      .addField(
+        new ArrayField({
+          name: 'float_array',
+          doc: 'float array',
+          type: 'float',
+          order: FieldOrder.ascending,
+        }).prop('customProp', 'val'),
+      )
+      .addField(
+        new ArrayField({
+          name: 'int_array',
+          doc: 'int array',
+          type: 'int',
+          order: FieldOrder.ascending,
+        }).prop('customProp', 'val'),
+      )
+      .addField(
+        new ArrayField({
+          name: 'long_array',
+          doc: 'long array',
+          type: 'long',
+          order: FieldOrder.ignore,
+        }).prop('customProp', 'val'),
+      )
+      .addField(
+        new ArrayField({
+          name: 'string_array',
+          doc: 'string array',
+          type: 'string',
+          order: FieldOrder.descending,
+        }).prop('customProp', 'val'),
+      )
+      .addField(
+        new MapField({
+          name: 'map_field',
+          type: 'string',
+        }).prop('customProp', 'val'),
+      )
+      .compile(),
+  ).toMatchInlineSnapshot(`
+    {
+      "fields": [
+        {
+          "customProp": "val",
+          "name": "boolean_array",
+          "type": [
+            "null",
+            {
+              "customProp": "val",
+              "items": "boolean",
+              "type": "array",
+            },
+          ],
+        },
+        {
+          "customProp": "val",
+          "name": "bytes_array",
+          "type": {
+            "customProp": "val",
+            "items": "bytes",
+            "type": "array",
+          },
+        },
+        {
+          "customProp": "val",
+          "name": "double_array",
+          "type": {
+            "customProp": "val",
+            "items": "double",
+            "type": "array",
+          },
+        },
+        {
+          "customProp": "val",
+          "name": "float_array",
+          "type": {
+            "customProp": "val",
+            "items": "float",
+            "type": "array",
+          },
+        },
+        {
+          "customProp": "val",
+          "name": "int_array",
+          "type": {
+            "customProp": "val",
+            "items": "int",
+            "type": "array",
+          },
+        },
+        {
+          "customProp": "val",
+          "name": "long_array",
+          "type": {
+            "customProp": "val",
+            "items": "long",
+            "type": "array",
+          },
+        },
+        {
+          "customProp": "val",
+          "name": "string_array",
+          "type": {
+            "customProp": "val",
+            "items": "string",
+            "type": "array",
+          },
+        },
+        {
+          "customProp": "val",
+          "name": "map_field",
+          "type": {
+            "customProp": "val",
+            "type": "map",
+            "values": "string",
+          },
+        },
+      ],
+      "name": "primitive",
+      "namespace": "record.array",
+      "type": "record",
+    }
+  `);
+});
+
 test('should create object type arrays', () => {
   expect(
     new AvroSchemaBuilder('primitive')

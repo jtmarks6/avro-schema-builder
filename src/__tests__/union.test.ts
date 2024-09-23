@@ -26,9 +26,17 @@ test('should create a schema with primitive values', () => {
           nullable: true,
         }),
       )
+      .addField(
+        new UnionField({
+          name: 'union_primitive_customProp',
+          types: ['int', 'string'],
+        }).prop('customProp', 'val'),
+      )
+      .prop('customPropTopLevel', 'val')
       .compile(),
   ).toMatchInlineSnapshot(`
     {
+      "customPropTopLevel": "val",
       "fields": [
         {
           "name": "union_primitive",
@@ -41,6 +49,14 @@ test('should create a schema with primitive values', () => {
           "name": "union_primitive_nullable",
           "type": [
             "null",
+            "int",
+            "string",
+          ],
+        },
+        {
+          "customProp": "val",
+          "name": "union_primitive_customProp",
+          "type": [
             "int",
             "string",
           ],
@@ -109,6 +125,33 @@ test('should create a schema with record types', () => {
           nullable: true,
         }),
       )
+      .addField(
+        new UnionField({
+          name: 'union_record_customProp',
+          types: [
+            new RecordField({
+              name: 'record_field_1',
+            }).addField(
+              new PrimitiveField({
+                name: 'int_field',
+                nullable: true,
+                type: 'int',
+              }).prop('customProp', 'val'),
+            ),
+
+            new RecordField({
+              name: 'record_field_2',
+            }).addField(
+              new PrimitiveField({
+                name: 'int_field',
+                type: 'int',
+              }),
+            ),
+          ],
+
+          nullable: true,
+        }).prop('customPropTopLevel', 'val'),
+      )
       .compile(),
   ).toMatchInlineSnapshot(`
     {
@@ -148,6 +191,37 @@ test('should create a schema with record types', () => {
             {
               "fields": [
                 {
+                  "name": "int_field",
+                  "type": [
+                    "null",
+                    "int",
+                  ],
+                },
+              ],
+              "name": "record_field_1",
+              "type": "record",
+            },
+            {
+              "fields": [
+                {
+                  "name": "int_field",
+                  "type": "int",
+                },
+              ],
+              "name": "record_field_2",
+              "type": "record",
+            },
+          ],
+        },
+        {
+          "customPropTopLevel": "val",
+          "name": "union_record_customProp",
+          "type": [
+            "null",
+            {
+              "fields": [
+                {
+                  "customProp": "val",
                   "name": "int_field",
                   "type": [
                     "null",
@@ -214,6 +288,23 @@ test('should create a schema with array types', () => {
           nullable: true,
         }),
       )
+      .addField(
+        new UnionField({
+          name: 'union_array_customProp',
+          types: [
+            new ArrayField({
+              name: 'array_field_1',
+              type: 'int',
+            }).prop('customProp', 'val'),
+            new ArrayField({
+              name: 'array_field_2',
+              type: 'string',
+            }),
+          ],
+
+          nullable: true,
+        }).prop('customPropTopLevel', 'val'),
+      )
       .compile(),
   ).toMatchInlineSnapshot(`
     {
@@ -236,6 +327,22 @@ test('should create a schema with array types', () => {
           "type": [
             "null",
             {
+              "items": "int",
+              "type": "array",
+            },
+            {
+              "items": "string",
+              "type": "array",
+            },
+          ],
+        },
+        {
+          "customPropTopLevel": "val",
+          "name": "union_array_customProp",
+          "type": [
+            "null",
+            {
+              "customProp": "val",
               "items": "int",
               "type": "array",
             },
@@ -289,6 +396,23 @@ test('should create a schema with map types', () => {
           nullable: true,
         }),
       )
+      .addField(
+        new UnionField({
+          name: 'union_map_customProp',
+          types: [
+            new MapField({
+              name: 'array_field_1',
+              type: 'int',
+            }).prop('customProp', 'val'),
+            new MapField({
+              name: 'array_field_2',
+              type: 'string',
+            }),
+          ],
+
+          nullable: true,
+        }).prop('customPropTopLevel', 'val'),
+      )
       .compile(),
   ).toMatchInlineSnapshot(`
     {
@@ -311,6 +435,22 @@ test('should create a schema with map types', () => {
           "type": [
             "null",
             {
+              "type": "map",
+              "values": "int",
+            },
+            {
+              "type": "map",
+              "values": "string",
+            },
+          ],
+        },
+        {
+          "customPropTopLevel": "val",
+          "name": "union_map_customProp",
+          "type": [
+            "null",
+            {
+              "customProp": "val",
               "type": "map",
               "values": "int",
             },
@@ -364,6 +504,23 @@ test('should create a schema with enum types', () => {
           nullable: true,
         }),
       )
+      .addField(
+        new UnionField({
+          name: 'union_enum_customProp',
+          types: [
+            new EnumField({
+              name: 'enum_field_1',
+              type: ['v1', 'v2', 'v3'],
+            }).prop('customProp', 'val'),
+            new EnumField({
+              name: 'enum_field_2',
+              type: ['v1', 'v2', 'v3'],
+            }),
+          ],
+
+          nullable: true,
+        }).prop('customPropTopLevel', 'val'),
+      )
       .compile(),
   ).toMatchInlineSnapshot(`
     {
@@ -396,6 +553,32 @@ test('should create a schema with enum types', () => {
           "type": [
             "null",
             {
+              "name": "enum_field_1",
+              "symbols": [
+                "v1",
+                "v2",
+                "v3",
+              ],
+              "type": "enum",
+            },
+            {
+              "name": "enum_field_2",
+              "symbols": [
+                "v1",
+                "v2",
+                "v3",
+              ],
+              "type": "enum",
+            },
+          ],
+        },
+        {
+          "customPropTopLevel": "val",
+          "name": "union_enum_customProp",
+          "type": [
+            "null",
+            {
+              "customProp": "val",
               "name": "enum_field_1",
               "symbols": [
                 "v1",
@@ -459,6 +642,23 @@ test('should create a schema with fixed types', () => {
           nullable: true,
         }),
       )
+      .addField(
+        new UnionField({
+          name: 'union_fixed_customProp',
+          types: [
+            new FixedField({
+              name: 'fixed_field_1',
+              size: 123,
+            }).prop('customProp', 'val'),
+            new FixedField({
+              name: 'fixed_field_2',
+              size: 5353,
+            }),
+          ],
+
+          nullable: true,
+        }).prop('customPropTopLevel', 'val'),
+      )
       .compile(),
   ).toMatchInlineSnapshot(`
     {
@@ -483,6 +683,24 @@ test('should create a schema with fixed types', () => {
           "type": [
             "null",
             {
+              "name": "fixed_field_1",
+              "size": 123,
+              "type": "fixed",
+            },
+            {
+              "name": "fixed_field_2",
+              "size": 5353,
+              "type": "fixed",
+            },
+          ],
+        },
+        {
+          "customPropTopLevel": "val",
+          "name": "union_fixed_customProp",
+          "type": [
+            "null",
+            {
+              "customProp": "val",
               "name": "fixed_field_1",
               "size": 123,
               "type": "fixed",
